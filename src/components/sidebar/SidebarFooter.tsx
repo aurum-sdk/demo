@@ -17,7 +17,7 @@ export function SidebarFooter() {
         className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
       >
         <Package className="h-4 w-4" />
-        npmjs
+        npm
       </a>
       <a
         href="https://github.com/aurum-sdk/aurum"
