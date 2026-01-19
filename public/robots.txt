@@ -1,0 +1,6 @@
+# Robots.txt for Aurum Demo
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://demo.aurumsdk.com/sitemap.xml
