@@ -1,4 +1,4 @@
-import { Globe, Package } from "lucide-react";
+import { BookOpen, Globe, Package } from "lucide-react";
 
 export function SidebarFooter() {
   return (
@@ -18,6 +18,14 @@ export function SidebarFooter() {
       >
         <Package className="h-4 w-4" />
         npm
+      </a>
+      <a
+        href="https://docs.aurumsdk.com"
+        target="_blank"
+        className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+      >
+        <BookOpen className="h-4 w-4" />
+        docs
       </a>
       <a
         href="https://github.com/aurum-sdk/aurum"
