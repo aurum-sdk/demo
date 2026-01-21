@@ -84,11 +84,7 @@ type AppContextType = {
   handleConnect: () => Promise<void>;
   handleDisconnect: () => Promise<void>;
   handleSign: () => Promise<void>;
-  handleWidgetConnect: (result: {
-    address: string;
-    walletId: string;
-    email?: string;
-  }) => Promise<void>;
+  handleWidgetConnect: (result: UserInfo) => Promise<void>;
   handleHeadlessConnect: (walletId: WalletId) => Promise<void>;
   handleEmailAuthStart: (email: string) => Promise<string>;
   handleEmailAuthVerify: (flowId: string, otp: string) => Promise<void>;
@@ -378,31 +374,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [userInfo?.publicAddress]);
 
   const handleWidgetConnect = useCallback(
-    async (result: { address: string; walletId: string; email?: string }) => {
-      // Try to get full user info, fallback to constructing from result
-      try {
-        const info = await aurum.getUserInfo();
-        if (info) {
-          setUserInfo(info);
-          toast(`User connected with ${info.walletId}`);
-          wasConnectedRef.current = true;
-          return;
-        }
-      } catch (e) {
-        console.error(e);
-        toast.error(
-          `Error: ${
-            (e as { message?: string })?.message ?? "getUserInfo failed"
-          }`
-        );
-      }
-      // Fallback: construct userInfo from the callback result
-      setUserInfo({
-        publicAddress: result.address,
-        walletId: result.walletId as WalletId,
-        walletName: result.walletId as UserInfo["walletName"],
-        email: result.email,
-      });
+    async (result: UserInfo) => {
+      setUserInfo(result);
       toast(`User connected with ${result.walletId}`);
       wasConnectedRef.current = true;
     },
