@@ -40,7 +40,7 @@ export function MainContent() {
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : connectUxMode === "widget" && !userInfo ? (
-          <ConnectWidget aurum={aurum as any} onConnect={handleWidgetConnect} />
+          <ConnectWidget aurum={aurum} onConnect={handleWidgetConnect} />
         ) : connectUxMode === "headless" && !userInfo ? (
           <Card
             className="w-full max-w-md"

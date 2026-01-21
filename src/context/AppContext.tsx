@@ -170,6 +170,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>();
   const [isSigning, setIsSigning] = useState(false);
+
+  // Track if user was previously connected (for accountsChanged event)
   const wasConnectedRef = useRef(false);
 
   // Debounced primary color for updateBrandConfig
@@ -183,7 +185,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (connected) {
         const info = await aurum.getUserInfo();
         setUserInfo(info);
-        wasConnectedRef.current = true;
       }
       setIsLoading(false);
     };
@@ -221,24 +222,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
 
+  // Keep wasConnectedRef in sync with userInfo
+  useEffect(() => {
+    wasConnectedRef.current = !!userInfo;
+  }, [userInfo]);
+
   // EIP1193 event listeners
   useEffect(() => {
     const handleAccountsChanged = async (accounts: string[]) => {
-      if (await aurum.isConnected()) {
-        // Only show toast if user was already connected (account switch, not initial connect)
-        if (wasConnectedRef.current) {
-          toast(`Accounts changed: ${accounts.join(", ")}`);
-        }
+      const wasAlreadyConnected = wasConnectedRef.current;
+
+      if (accounts.length === 0) {
+        // User disconnected
+        toast("User disconnected");
+        setUserInfo(undefined);
+      } else if (wasAlreadyConnected) {
+        // User was already connected and changed accounts
+        toast(`Accounts changed: ${accounts.join(", ")}`);
         const info = await aurum.getUserInfo();
         setUserInfo(info);
-        wasConnectedRef.current = true;
-      } else {
-        if (accounts.length === 0) {
-          toast("User disconnected");
-        }
-        setUserInfo(undefined);
-        wasConnectedRef.current = false;
       }
+      // If not already connected and accounts > 0, this is a new connection
+      // which will be handled by the connect handlers (handleConnect, handleWidgetConnect, etc.)
     };
 
     aurum.rpcProvider?.on?.("accountsChanged", handleAccountsChanged);
@@ -337,7 +342,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const info = await aurum.getUserInfo();
       setUserInfo(info);
       toast(`User connected with ${info?.walletId}`);
-      wasConnectedRef.current = true;
     } catch (error) {
       console.error(error);
     }
@@ -346,7 +350,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const handleDisconnect = useCallback(async () => {
     await aurum.disconnect();
     setUserInfo(undefined);
-    wasConnectedRef.current = false;
   }, []);
 
   const handleSign = useCallback(async () => {
@@ -377,7 +380,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     async (result: UserInfo) => {
       setUserInfo(result);
       toast(`User connected with ${result.walletId}`);
-      wasConnectedRef.current = true;
     },
     []
   );
@@ -388,7 +390,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const info = await aurum.getUserInfo();
       setUserInfo(info);
       toast(`User connected with ${walletId}`);
-      wasConnectedRef.current = true;
     } catch (error) {
       console.error(error);
       toast.error(
@@ -411,7 +412,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const info = await aurum.getUserInfo();
       setUserInfo(info);
       toast(`User connected with ${info?.walletId}`);
-      wasConnectedRef.current = true;
     },
     []
   );
