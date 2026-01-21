@@ -245,19 +245,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    const handleChainChanged = (chainId: string) => {
-      toast(`Chain changed to ${chainId} (${Number(chainId)})`);
-    };
-
     aurum.rpcProvider?.on?.("accountsChanged", handleAccountsChanged);
-    aurum.rpcProvider?.on?.("chainChanged", handleChainChanged);
 
     return () => {
       aurum.rpcProvider?.removeListener?.(
         "accountsChanged",
         handleAccountsChanged
       );
-      aurum.rpcProvider?.removeListener?.("chainChanged", handleChainChanged);
     };
   }, []);
 

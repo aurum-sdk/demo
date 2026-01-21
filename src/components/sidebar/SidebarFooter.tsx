@@ -12,20 +12,20 @@ export function SidebarFooter() {
         website
       </a>
       <a
-        href="https://npmjs.com/package/@aurum-sdk/core"
-        target="_blank"
-        className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-      >
-        <Package className="h-4 w-4" />
-        npm
-      </a>
-      <a
         href="https://docs.aurumsdk.com"
         target="_blank"
         className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
       >
         <BookOpen className="h-4 w-4" />
         docs
+      </a>
+      <a
+        href="https://npmjs.com/package/@aurum-sdk/core"
+        target="_blank"
+        className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+      >
+        <Package className="h-4 w-4" />
+        npm
       </a>
       <a
         href="https://github.com/aurum-sdk/aurum"
