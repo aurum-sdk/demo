@@ -3,7 +3,7 @@ import { WalletLogo } from "@aurum-sdk/logos/react";
 import { WalletId } from "@aurum-sdk/types";
 import { Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
-import { aurum } from "@/context/AppContext";
+import { aurum, useApp } from "@/context/AppContext";
 import { RADIUS_MAP } from "@/constants";
 
 type WalletConnectQRProps = {
@@ -11,6 +11,7 @@ type WalletConnectQRProps = {
 };
 
 export function WalletConnectQR({ radius }: WalletConnectQRProps) {
+  const { handleCustomQRCodeConnect } = useApp();
   const [showQrModal, setShowQrModal] = useState(false);
   const [wcUri, setWcUri] = useState<string | null>(null);
   const [isLoadingQr, setIsLoadingQr] = useState(false);
@@ -27,7 +28,9 @@ export function WalletConnectQR({ radius }: WalletConnectQRProps) {
 
       await waitForConnection();
       const info = await aurum.getUserInfo();
-      toast(`User connected with ${info?.walletId}`);
+      if (info) {
+        handleCustomQRCodeConnect(info);
+      }
       setShowQrModal(false);
       setWcUri(null);
     } catch (error) {

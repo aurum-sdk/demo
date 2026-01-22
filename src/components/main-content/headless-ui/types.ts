@@ -17,7 +17,6 @@ export const ALL_HEADLESS_WALLETS = [
   { id: WalletId.Rabby, name: "Rabby" },
   { id: WalletId.CoinbaseWallet, name: "Coinbase" },
   { id: WalletId.WalletConnect, name: "WalletConnect" },
-  { id: WalletId.Ledger, name: "Ledger" },
   { id: WalletId.Brave, name: "Brave" },
 ] as const;
 

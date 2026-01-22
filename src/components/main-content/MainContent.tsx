@@ -19,7 +19,7 @@ export function MainContent() {
     isLoading,
     userInfo,
     isSigning,
-    handleConnect,
+    handleModalConnect,
     handleDisconnect,
     handleSign,
     handleShare,
@@ -76,7 +76,7 @@ export function MainContent() {
                   radius={radius}
                   primaryColor={primaryColor}
                   isDark={isDark}
-                  onConnect={handleConnect}
+                  onConnect={handleModalConnect}
                 />
               ) : (
                 <ConnectedState

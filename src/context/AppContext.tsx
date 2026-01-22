@@ -81,13 +81,14 @@ type AppContextType = {
   // Actions
   handleReset: () => void;
   handleShare: () => void;
-  handleConnect: () => Promise<void>;
+  handleModalConnect: () => Promise<void>;
   handleDisconnect: () => Promise<void>;
   handleSign: () => Promise<void>;
   handleWidgetConnect: (result: UserInfo) => Promise<void>;
   handleHeadlessConnect: (walletId: WalletId) => Promise<void>;
   handleEmailAuthStart: (email: string) => Promise<string>;
   handleEmailAuthVerify: (flowId: string, otp: string) => Promise<void>;
+  handleCustomQRCodeConnect: (result: UserInfo) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -230,6 +231,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // EIP1193 event listeners
   useEffect(() => {
     const handleAccountsChanged = async (accounts: string[]) => {
+      console.log('accounts changed', accounts);
       const wasAlreadyConnected = wasConnectedRef.current;
 
       if (accounts.length === 0) {
@@ -243,7 +245,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setUserInfo(info);
       }
       // If not already connected and accounts > 0, this is a new connection
-      // which will be handled by the connect handlers (handleConnect, handleWidgetConnect, etc.)
+      // which will be handled by the connect handlers (handleModalConnect, handleWidgetConnect, etc.)
     };
 
     aurum.rpcProvider?.on?.("accountsChanged", handleAccountsChanged);
@@ -336,7 +338,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const handleConnect = useCallback(async () => {
+  const handleModalConnect = useCallback(async () => {
     try {
       await aurum.connect();
       const info = await aurum.getUserInfo();
@@ -416,6 +418,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const handleCustomQRCodeConnect = useCallback((result: UserInfo) => {
+    setUserInfo(result);
+    toast(`User connected with ${result.walletId}`);
+  }, []);
+
   const value: AppContextType = {
     isDark,
     setIsDark,
@@ -444,13 +451,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     isSigning,
     handleReset,
     handleShare,
-    handleConnect,
+    handleModalConnect,
     handleDisconnect,
     handleSign,
     handleWidgetConnect,
     handleHeadlessConnect,
     handleEmailAuthStart,
     handleEmailAuthVerify,
+    handleCustomQRCodeConnect,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

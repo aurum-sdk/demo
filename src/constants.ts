@@ -15,7 +15,6 @@ export const ALL_WALLETS: WalletOption[] = [
   { id: WalletId.WalletConnect, name: "WalletConnect" },
   { id: WalletId.Rabby, name: "Rabby" },
   { id: WalletId.CoinbaseWallet, name: "Coinbase Wallet" },
-  { id: WalletId.Ledger, name: "Ledger" },
   { id: WalletId.Brave, name: "Brave" },
 ];
 

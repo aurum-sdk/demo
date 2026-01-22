@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aurum-sdk/core": "^0.2.1",
-    "@aurum-sdk/logos": "^0.2.1",
-    "@aurum-sdk/types": "^0.2.1",
+    "@aurum-sdk/core": "0.2.3-canary.3",
+    "@aurum-sdk/logos": "0.2.3-canary.3",
+    "@aurum-sdk/types": "0.2.3-canary.3",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-select": "^2.2.6",
