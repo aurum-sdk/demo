@@ -7,7 +7,7 @@ import {
   useRef,
   type ReactNode,
 } from "react";
-import { toast } from "react-toastify";
+import { toast } from "@/components/toast";
 import { Aurum } from "@aurum-sdk/core";
 import { WalletId, type UserInfo } from "@aurum-sdk/types";
 import type {
@@ -343,7 +343,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await aurum.connect();
       const info = await aurum.getUserInfo();
       setUserInfo(info);
-      toast(`User connected with ${info?.walletId}`);
+      toast(`User connected with ${info?.walletName}`);
     } catch (error) {
       console.error(error);
     }
@@ -367,7 +367,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         method: "personal_sign",
         params: [hexMessage, userInfo.publicAddress],
       });
-      toast(`Signature: ${result}`);
+      const msg = `Signature: ${result}`;
+      toast(msg.length > 150 ? `${msg.slice(0, 147)}...` : msg);
     } catch (error) {
       console.error(error);
       toast.error(
@@ -381,7 +382,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const handleWidgetConnect = useCallback(
     async (result: UserInfo) => {
       setUserInfo(result);
-      toast(`User connected with ${result.walletId}`);
+      toast(`User connected with ${result.walletName}`);
     },
     []
   );
@@ -391,7 +392,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await aurum.connect(walletId);
       const info = await aurum.getUserInfo();
       setUserInfo(info);
-      toast(`User connected with ${walletId}`);
+      toast(`User connected with ${info?.walletName}`);
     } catch (error) {
       console.error(error);
       toast.error(
@@ -413,14 +414,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await aurum.emailAuthVerify(flowId, otp);
       const info = await aurum.getUserInfo();
       setUserInfo(info);
-      toast(`User connected with ${info?.walletId}`);
+      toast(`User connected with ${info?.walletName}`);
     },
     []
   );
 
   const handleCustomQRCodeConnect = useCallback((result: UserInfo) => {
     setUserInfo(result);
-    toast(`User connected with ${result.walletId}`);
+    toast(`User connected with ${result.walletName}`);
   }, []);
 
   const value: AppContextType = {

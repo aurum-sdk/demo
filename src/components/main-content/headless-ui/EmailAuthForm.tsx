@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loader2, ArrowRight } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "@/components/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RADIUS_MAP } from "@/constants";

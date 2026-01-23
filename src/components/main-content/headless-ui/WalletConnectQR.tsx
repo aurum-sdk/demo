@@ -2,7 +2,7 @@ import { useState } from "react";
 import { WalletLogo } from "@aurum-sdk/logos/react";
 import { WalletId } from "@aurum-sdk/types";
 import { Loader2, X } from "lucide-react";
-import { toast } from "react-toastify";
+import { toast } from "@/components/toast";
 import { aurum, useApp } from "@/context/AppContext";
 import { RADIUS_MAP } from "@/constants";
 

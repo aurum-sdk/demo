@@ -2,11 +2,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { Toaster } from "./components/Toaster.tsx";
+import { ToastProvider, Toaster } from "./components/toast";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-    <Toaster position="top-right" theme="dark" />
+    <ToastProvider>
+      <App />
+      <Toaster />
+    </ToastProvider>
   </StrictMode>
 );
